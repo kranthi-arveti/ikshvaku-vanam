@@ -1,0 +1,14 @@
+{
+  "name": "ikshvaku-vanam",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static website for Ikshvaku Vanam farmhouse, Rachloor, Hyderabad",
+  "scripts": {
+    "test": "jest",
+    "test:coverage": "jest --coverage"
+  },
+  "devDependencies": {
+    "jest": "^30.4.2",
+    "jest-environment-jsdom": "^30.4.1"
+  }
+}
