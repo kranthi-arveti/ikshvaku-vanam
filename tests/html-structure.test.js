@@ -200,15 +200,45 @@ describe('contact and external links', () => {
   });
 });
 
+describe('footer social links', () => {
+  let doc;
+  beforeAll(() => {
+    doc = parseIndexHtml();
+  });
+
+  test('lists Instagram, Facebook, YouTube and WhatsApp icon links', () => {
+    const icons = Array.from(doc.querySelectorAll('.footer-social .social-icon'));
+    expect(icons.length).toBe(4);
+
+    ['Instagram', 'Facebook', 'YouTube', 'WhatsApp'].forEach(label => {
+      const match = icons.find(icon => icon.getAttribute('aria-label') === label);
+      expect(match).not.toBeUndefined();
+    });
+  });
+
+  test('every social icon link opens safely in a new tab', () => {
+    const icons = Array.from(doc.querySelectorAll('.footer-social .social-icon'));
+    icons.forEach(icon => {
+      expect(icon.getAttribute('target')).toBe('_blank');
+      expect(icon.getAttribute('rel')).toMatch(/noopener/);
+    });
+  });
+});
+
 describe('gallery and amenities content', () => {
   let doc;
   beforeAll(() => {
     doc = parseIndexHtml();
   });
 
-  test('the gallery renders all seven farmhouse photos', () => {
+  test('the gallery renders every farmhouse photo in the images directory', () => {
+    const imageFiles = fs
+      .readdirSync(path.resolve(PROJECT_ROOT, 'images'))
+      .filter(name => /^ikshvaku-\d+\.jpe?g$/i.test(name));
+
     const items = doc.querySelectorAll('.gallery-item');
-    expect(items.length).toBe(7);
+    expect(items.length).toBeGreaterThan(0);
+    expect(items.length).toBe(imageFiles.length);
   });
 
   test('gallery items are <button> elements so they are keyboard-operable', () => {

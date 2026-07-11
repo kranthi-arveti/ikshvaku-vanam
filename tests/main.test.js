@@ -1,4 +1,4 @@
-const { loadPageAndScript } = require('./utils/loadPage');
+const { loadPageAndScript, getIndexHtmlSource } = require('./utils/loadPage');
 
 describe('footer year', () => {
   test('is set to the current year on load', () => {
@@ -156,6 +156,85 @@ describe('gallery lightbox', () => {
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
 
     expect(lightbox.classList.contains('open')).toBe(true);
+  });
+});
+
+describe('gallery carousel', () => {
+  let track, prevBtn, nextBtn, scrollBySpy;
+
+  beforeEach(() => {
+    loadPageAndScript();
+    track = document.getElementById('gallery-track');
+    prevBtn = document.getElementById('gallery-prev');
+    nextBtn = document.getElementById('gallery-next');
+    // jsdom does not implement Element.scrollBy — stub it so click handlers
+    // can run and we can assert on how they tried to scroll.
+    scrollBySpy = jest.fn();
+    track.scrollBy = scrollBySpy;
+  });
+
+  test('prev/next are disabled on load when the track has nothing to scroll (jsdom has no layout)', () => {
+    expect(prevBtn.disabled).toBe(true);
+    expect(nextBtn.disabled).toBe(true);
+  });
+
+  test('clicking next scrolls the track forward by one card width plus the gap', () => {
+    nextBtn.dispatchEvent(new Event('click', { bubbles: true }));
+
+    expect(scrollBySpy).toHaveBeenCalledTimes(1);
+    const arg = scrollBySpy.mock.calls[0][0];
+    expect(arg.behavior).toBe('smooth');
+    expect(arg.left).toBeGreaterThan(0);
+  });
+
+  test('clicking prev scrolls the track backward by one card width plus the gap', () => {
+    prevBtn.dispatchEvent(new Event('click', { bubbles: true }));
+
+    expect(scrollBySpy).toHaveBeenCalledTimes(1);
+    const arg = scrollBySpy.mock.calls[0][0];
+    expect(arg.behavior).toBe('smooth');
+    expect(arg.left).toBeLessThan(0);
+  });
+
+  test('clicking next/prev does nothing when the track has no gallery items', () => {
+    track.innerHTML = '';
+    track.scrollBy = scrollBySpy;
+
+    nextBtn.dispatchEvent(new Event('click', { bubbles: true }));
+    prevBtn.dispatchEvent(new Event('click', { bubbles: true }));
+
+    expect(scrollBySpy).not.toHaveBeenCalled();
+  });
+
+  test('scrolling the track re-evaluates the disabled state without throwing', () => {
+    expect(() => track.dispatchEvent(new Event('scroll'))).not.toThrow();
+  });
+
+  test('resizing the window re-evaluates the disabled state without throwing', () => {
+    expect(() => window.dispatchEvent(new Event('resize'))).not.toThrow();
+  });
+});
+
+describe('gallery carousel wiring is optional', () => {
+  function loadPageWithout(...idsToRemove) {
+    const html = getIndexHtmlSource();
+    const bodyMatch = html.match(/<body[^>]*>([\s\S]*)<\/body>/i);
+    document.body.innerHTML = bodyMatch[1];
+    idsToRemove.forEach(id => document.getElementById(id)?.remove());
+    jest.resetModules();
+    require('../js/main.js');
+  }
+
+  test('does not throw when the carousel track and buttons are absent', () => {
+    expect(() => loadPageWithout('gallery-track', 'gallery-prev', 'gallery-next')).not.toThrow();
+  });
+
+  test('does not throw when only the prev button is absent', () => {
+    expect(() => loadPageWithout('gallery-prev')).not.toThrow();
+  });
+
+  test('does not throw when only the next button is absent', () => {
+    expect(() => loadPageWithout('gallery-next')).not.toThrow();
   });
 });
 
