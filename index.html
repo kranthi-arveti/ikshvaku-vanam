@@ -142,7 +142,9 @@
     <div class="container">
       <p class="eyebrow center">Take a Look</p>
       <h2 class="center">Gallery</h2>
-      <div class="gallery-grid">
+      <div class="gallery-carousel">
+      <button class="gallery-nav gallery-prev" id="gallery-prev" aria-label="Previous photos">&#8249;</button>
+      <div class="gallery-track" id="gallery-track">
         <button class="gallery-item" data-full="images/ikshvaku-1.jpeg">
           <img src="images/ikshvaku-1.jpeg" alt="Sunken stone courtyard with boulders and reflecting pool at dusk" loading="lazy">
         </button>
@@ -233,6 +235,8 @@
         <button class="gallery-item span-2" data-full="images/ikshvaku-30.jpeg">
           <img src="images/ikshvaku-30.jpeg" alt="Another aerial night view of the lit stone courtyard" loading="lazy">
         </button>
+      </div>
+      <button class="gallery-nav gallery-next" id="gallery-next" aria-label="Next photos">&#8250;</button>
       </div>
     </div>
   </section>

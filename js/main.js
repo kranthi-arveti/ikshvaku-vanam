@@ -46,6 +46,32 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') closeLightbox();
 });
 
+// Gallery carousel
+const galleryTrack = document.getElementById('gallery-track');
+const galleryPrev = document.getElementById('gallery-prev');
+const galleryNext = document.getElementById('gallery-next');
+
+if (galleryTrack && galleryPrev && galleryNext) {
+  const scrollByCard = (dir) => {
+    const card = galleryTrack.querySelector('.gallery-item');
+    if (!card) return;
+    const gap = parseFloat(getComputedStyle(galleryTrack).columnGap) || 16;
+    galleryTrack.scrollBy({ left: dir * (card.getBoundingClientRect().width + gap), behavior: 'smooth' });
+  };
+
+  const updateNavState = () => {
+    const maxScroll = galleryTrack.scrollWidth - galleryTrack.clientWidth - 1;
+    galleryPrev.disabled = galleryTrack.scrollLeft <= 0;
+    galleryNext.disabled = galleryTrack.scrollLeft >= maxScroll;
+  };
+
+  galleryPrev.addEventListener('click', () => scrollByCard(-1));
+  galleryNext.addEventListener('click', () => scrollByCard(1));
+  galleryTrack.addEventListener('scroll', updateNavState, { passive: true });
+  window.addEventListener('resize', updateNavState);
+  updateNavState();
+}
+
 // Enquiry form — no backend yet, just acknowledge the submission
 const stayForm = document.getElementById('stay-form');
 const formNote = document.getElementById('form-note');
