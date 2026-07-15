@@ -44,11 +44,12 @@ Hosted on **GitHub Pages**, serving directly from the `main` branch. Every push 
 - Canonical domain: `www.ikshvakuvanam.com` (set via the `CNAME` file); `ikshvakuvanam.com` redirects to it
 - DNS is managed in **Cloudflare** (`A` records for the apex domain pointing at GitHub Pages' IPs, a `CNAME` for `www`), kept in **DNS-only mode** (not proxied) so GitHub can issue and renew the HTTPS certificate
 - Fallback URL: https://kranthi-arveti.github.io/ikshvaku-vanam/
+- Email (`events@ikshvakuvanam.com`) is live via **Cloudflare Email Routing**, forwarding to a personal inbox — no mailbox is actually hosted, it's forwarding only
 
 ## Known placeholders
 
 A few things are intentionally left as placeholders until real details are available — worth checking before wider sharing:
 
-- Phone number and email in the "Reservations Coming Soon" section (`#stay`)
+- Phone number in the "Reservations Coming Soon" section (`#stay`)
 - Facebook, YouTube and WhatsApp footer icons link to `#` (Instagram is live)
 - The enquiry form doesn't send anywhere yet — it just shows a "coming soon" message on submit
