@@ -50,6 +50,5 @@ Hosted on **GitHub Pages**, serving directly from the `main` branch. Every push 
 
 A few things are intentionally left as placeholders until real details are available — worth checking before wider sharing:
 
-- Phone number in the "Reservations Coming Soon" section (`#stay`)
 - Facebook, YouTube and WhatsApp footer icons link to `#` (Instagram is live)
 - The enquiry form doesn't send anywhere yet — it just shows a "coming soon" message on submit
