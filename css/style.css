@@ -313,6 +313,11 @@ h2.center { text-align: center; max-width: 640px; margin-left: auto; margin-righ
 }
 .location-facts li strong { color: var(--gold-soft); font-weight: 500; margin-right: 8px; }
 .location-note { font-size: 0.88rem; color: rgba(246,241,231,0.6); font-style: italic; }
+.location-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 28px;
+}
 .location-directions {
   display: inline-block;
   color: var(--gold-soft);
